@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::context::Context;
+use crate::Context::Context;
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
@@ -42,7 +42,7 @@ pub async fn run_interactive_loop(ctx: &mut Context) -> Result<()> {
 
 async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> Result<()> {
     let mut input = String::new();
-    let query_engine = crate::query_engine::QueryEngine::new();
+    let query_engine = crate::QueryEngine::QueryEngine::new();
 
     loop {
         terminal.draw(|f| {
@@ -61,9 +61,9 @@ async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> R
 
             // 1. Status Bar
             let provider_str = match ctx.provider {
-                crate::context::Provider::OpenRouter => "OpenRouter",
-                crate::context::Provider::Google => "Google",
-                crate::context::Provider::Nvidia => "Nvidia",
+                crate::Context::Provider::OpenRouter => "OpenRouter",
+                crate::Context::Provider::Google => "Google",
+                crate::Context::Provider::Nvidia => "Nvidia",
             };
             let status_text = format!(
                 " Provider: {} | Model: {} | {}",
@@ -100,17 +100,17 @@ async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> R
                             if parts.len() >= 3 {
                                 match parts[1].to_lowercase().as_str() {
                                     "openrouter" => {
-                                        ctx.provider = crate::context::Provider::OpenRouter;
+                                        ctx.provider = crate::Context::Provider::OpenRouter;
                                         ctx.model = parts[2].to_string();
                                         ctx.history.push(format!("Model switched to OpenRouter: {}", ctx.model));
                                     }
                                     "google" => {
-                                        ctx.provider = crate::context::Provider::Google;
+                                        ctx.provider = crate::Context::Provider::Google;
                                         ctx.model = parts[2].to_string();
                                         ctx.history.push(format!("Model switched to Google: {}", ctx.model));
                                     }
                                     "nvidia" => {
-                                        ctx.provider = crate::context::Provider::Nvidia;
+                                        ctx.provider = crate::Context::Provider::Nvidia;
                                         ctx.model = parts[2].to_string();
                                         ctx.history.push(format!("Model switched to Nvidia: {}", ctx.model));
                                     }

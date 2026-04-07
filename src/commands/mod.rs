@@ -1,6 +1,6 @@
 use anyhow::Result;
 use crate::cli::Commands;
-use crate::context::Context;
+use crate::Context::Context;
 
 pub async fn handle_command(cmd: Commands, ctx: &mut Context) -> Result<()> {
     match cmd {
@@ -21,7 +21,7 @@ pub async fn handle_command(cmd: Commands, ctx: &mut Context) -> Result<()> {
             println!("Logging out...");
         }
         Commands::Cost => {
-            println!("Current cost: $0.00");
+            println!("Current cost: ${:.4}", ctx.cost.total_cost_usd);
         }
     }
     Ok(())

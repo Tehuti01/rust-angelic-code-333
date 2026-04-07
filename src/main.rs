@@ -1,15 +1,32 @@
 use anyhow::Result;
 use clap::Parser;
 
+#[allow(non_snake_case)]
 mod cli;
+#[allow(non_snake_case)]
 mod commands;
-mod context;
-mod query_engine;
-mod tools;
+#[allow(non_snake_case)]
+mod Context;
+#[allow(non_snake_case)]
+mod QueryEngine;
+#[allow(non_snake_case)]
+mod Tool;
+#[allow(non_snake_case)]
 mod ui;
-mod cost;
-mod task;
-mod types;
+#[allow(non_snake_case)]
+mod Cost;
+#[allow(non_snake_case)]
+mod Task;
+#[allow(non_snake_case)]
+mod Types;
+#[allow(non_snake_case)]
+mod file;
+#[allow(non_snake_case)]
+mod shell;
+#[allow(non_snake_case)]
+mod replace;
+#[allow(non_snake_case)]
+mod glob;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -23,7 +40,7 @@ async fn main() -> Result<()> {
     let args = cli::Cli::parse();
 
     // Initialize context
-    let mut ctx = context::Context::new().await?;
+    let mut ctx = Context::Context::new().await?;
 
     // Handle CLI subcommands if present, or enter interactive mode
     if let Some(cmd) = args.command {
