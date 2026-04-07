@@ -95,10 +95,10 @@ async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> R
                         if trimmed == "/exit" || trimmed == "/quit" {
                             return Ok(());
                         }
-                        if trimmed.starts_with("/model ") {
+                        if trimmed.to_lowercase().starts_with("/model ") {
                             let parts: Vec<&str> = trimmed.split_whitespace().collect();
                             if parts.len() >= 3 {
-                                match parts[1] {
+                                match parts[1].to_lowercase().as_str() {
                                     "openrouter" => {
                                         ctx.provider = crate::context::Provider::OpenRouter;
                                         ctx.model = parts[2].to_string();
