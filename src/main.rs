@@ -4,10 +4,12 @@ use clap::Parser;
 mod cli;
 mod commands;
 mod context;
-mod query;
+mod query_engine;
 mod tools;
 mod ui;
 mod cost;
+mod task;
+mod types;
 
 #[tokio::main]
 async fn main() -> Result<()> {

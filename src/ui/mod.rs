@@ -42,7 +42,7 @@ pub async fn run_interactive_loop(ctx: &mut Context) -> Result<()> {
 
 async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> Result<()> {
     let mut input = String::new();
-    let query_engine = crate::query::QueryEngine::new();
+    let query_engine = crate::query_engine::QueryEngine::new();
 
     loop {
         terminal.draw(|f| {

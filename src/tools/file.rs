@@ -3,6 +3,7 @@ use async_trait::async_trait;
 use crate::tools::Tool;
 use std::fs;
 use std::path::PathBuf;
+use serde_json::{json, Value};
 
 pub struct ReadFileTool;
 
@@ -10,10 +11,19 @@ pub struct ReadFileTool;
 impl Tool for ReadFileTool {
     fn name(&self) -> &'static str { "read_file" }
     fn description(&self) -> &'static str { "Reads the content of a file." }
-    async fn execute(&self, args: &serde_json::Value) -> Result<serde_json::Value> {
+    fn input_schema(&self) -> Value {
+        json!({
+            "type": "object",
+            "properties": {
+                "file_path": { "type": "string" }
+            },
+            "required": ["file_path"]
+        })
+    }
+    async fn execute(&self, args: &Value) -> Result<Value> {
         let path_str = args["file_path"].as_str().ok_or_else(|| anyhow::anyhow!("Missing file_path"))?;
         let content = fs::read_to_string(path_str)?;
-        Ok(serde_json::json!({ "content": content }))
+        Ok(json!({ "content": content }))
     }
 }
 
@@ -23,7 +33,17 @@ pub struct WriteFileTool;
 impl Tool for WriteFileTool {
     fn name(&self) -> &'static str { "write_file" }
     fn description(&self) -> &'static str { "Writes content to a file, creating parent directories if needed." }
-    async fn execute(&self, args: &serde_json::Value) -> Result<serde_json::Value> {
+    fn input_schema(&self) -> Value {
+        json!({
+            "type": "object",
+            "properties": {
+                "file_path": { "type": "string" },
+                "content": { "type": "string" }
+            },
+            "required": ["file_path", "content"]
+        })
+    }
+    async fn execute(&self, args: &Value) -> Result<Value> {
         let path_str = args["file_path"].as_str().ok_or_else(|| anyhow::anyhow!("Missing file_path"))?;
         let content = args["content"].as_str().ok_or_else(|| anyhow::anyhow!("Missing content"))?;
         
@@ -32,7 +52,7 @@ impl Tool for WriteFileTool {
             fs::create_dir_all(parent)?;
         }
         fs::write(path, content)?;
-        Ok(serde_json::json!({ "status": "success" }))
+        Ok(json!({ "status": "success" }))
     }
 }
 
@@ -42,7 +62,15 @@ pub struct ListDirectoryTool;
 impl Tool for ListDirectoryTool {
     fn name(&self) -> &'static str { "list_directory" }
     fn description(&self) -> &'static str { "Lists files in a directory." }
-    async fn execute(&self, args: &serde_json::Value) -> Result<serde_json::Value> {
+    fn input_schema(&self) -> Value {
+        json!({
+            "type": "object",
+            "properties": {
+                "dir_path": { "type": "string" }
+            }
+        })
+    }
+    async fn execute(&self, args: &Value) -> Result<Value> {
         let path_str = args["dir_path"].as_str().unwrap_or(".");
         let mut entries = Vec::new();
         for entry in fs::read_dir(path_str)? {
@@ -50,9 +78,9 @@ impl Tool for ListDirectoryTool {
             let path = entry.path();
             let name = path.file_name().unwrap_or_default().to_string_lossy().into_owned();
             let is_dir = path.is_dir();
-            entries.push(serde_json::json!({ "name": name, "is_dir": is_dir }));
+            entries.push(json!({ "name": name, "is_dir": is_dir }));
         }
-        Ok(serde_json::json!({ "entries": entries }))
+        Ok(json!({ "entries": entries }))
     }
 }
 
@@ -62,11 +90,20 @@ pub struct GrepSearchTool;
 impl Tool for GrepSearchTool {
     fn name(&self) -> &'static str { "grep_search" }
     fn description(&self) -> &'static str { "Searches for a pattern in files." }
-    async fn execute(&self, args: &serde_json::Value) -> Result<serde_json::Value> {
+    fn input_schema(&self) -> Value {
+        json!({
+            "type": "object",
+            "properties": {
+                "pattern": { "type": "string" },
+                "dir_path": { "type": "string" }
+            },
+            "required": ["pattern"]
+        })
+    }
+    async fn execute(&self, args: &Value) -> Result<Value> {
         let pattern = args["pattern"].as_str().ok_or_else(|| anyhow::anyhow!("Missing pattern"))?;
         let dir_path = args["dir_path"].as_str().unwrap_or(".");
         
-        // Using ripgrep if available, or a simple internal search
         let output = tokio::process::Command::new("grep")
             .arg("-rn")
             .arg(pattern)
@@ -75,7 +112,6 @@ impl Tool for GrepSearchTool {
             .await?;
 
         let results = String::from_utf8_lossy(&output.stdout).to_string();
-        Ok(serde_json::json!({ "results": results }))
+        Ok(json!({ "results": results }))
     }
 }
-

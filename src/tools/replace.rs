@@ -2,6 +2,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use crate::tools::Tool;
 use std::fs;
+use serde_json::{json, Value};
 
 pub struct ReplaceTool;
 
@@ -9,7 +10,18 @@ pub struct ReplaceTool;
 impl Tool for ReplaceTool {
     fn name(&self) -> &'static str { "replace" }
     fn description(&self) -> &'static str { "Replaces a specific string in a file with a new one." }
-    async fn execute(&self, args: &serde_json::Value) -> Result<serde_json::Value> {
+    fn input_schema(&self) -> Value {
+        json!({
+            "type": "object",
+            "properties": {
+                "file_path": { "type": "string" },
+                "old_string": { "type": "string" },
+                "new_string": { "type": "string" }
+            },
+            "required": ["file_path", "old_string", "new_string"]
+        })
+    }
+    async fn execute(&self, args: &Value) -> Result<Value> {
         let path_str = args["file_path"].as_str().ok_or_else(|| anyhow::anyhow!("Missing file_path"))?;
         let old_string = args["old_string"].as_str().ok_or_else(|| anyhow::anyhow!("Missing old_string"))?;
         let new_string = args["new_string"].as_str().ok_or_else(|| anyhow::anyhow!("Missing new_string"))?;
@@ -22,6 +34,6 @@ impl Tool for ReplaceTool {
         }
         
         fs::write(path_str, new_content)?;
-        Ok(serde_json::json!({ "status": "success" }))
+        Ok(json!({ "status": "success" }))
     }
 }
