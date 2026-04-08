@@ -48,6 +48,16 @@ pub mod Config;
 #[allow(non_snake_case)]
 pub mod Buddy;
 
+pub mod plugins;
+pub mod skills;
+pub mod hooks;
+pub mod sandbox;
+pub mod mcp;
+pub mod schemas;
+pub mod state;
+pub mod server;
+
+
 
 
 
