@@ -86,9 +86,33 @@ impl TaskState {
             start_time,
             end_time: None,
             total_paused_ms: 0,
-            output_file: String::new(), // In real app, this would be a path
+            output_file: String::new(),
             output_offset: 0,
             notified: false,
         }
     }
+
+    // Ported from tasks/stopTask.ts
+    pub fn stop(&mut self) {
+        self.status = TaskStatus::Killed;
+        self.end_time = Some(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis() as u64);
+    }
+
+    // Ported from tasks/LocalShellTask/guards.ts
+    pub fn is_shell_task_safe(command: &str) -> bool {
+        // Validation logic
+        !command.contains("rm -rf /")
+    }
 }
+
+pub struct RemoteAgentTask {
+    pub remote_id: String,
+    pub session_id: String,
+}
+
+impl RemoteAgentTask {
+    pub fn new(remote_id: String, session_id: String) -> Self {
+        Self { remote_id, session_id }
+    }
+}
+
