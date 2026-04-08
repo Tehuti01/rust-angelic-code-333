@@ -56,6 +56,12 @@ pub mod mcp;
 pub mod schemas;
 pub mod state;
 pub mod server;
+pub mod memdir;
+pub mod constants;
+pub mod coordinator;
+pub mod voice;
+pub mod remote;
+
 
 
 
