@@ -119,5 +119,44 @@ fn test_11_file_edit_logic() {
     fs::remove_file(file_path).unwrap();
 }
 
+#[test]
+fn test_12_vim_state_transitions() {
+    use claude_code_rs::Vim::{VimState, VimMode, CommandState};
+    let mut vim = VimState::new();
+    
+    // Initial state
+    match &vim.mode {
+        VimMode::Normal { command } => assert_eq!(command, &CommandState::Idle),
+        _ => panic!("Expected Normal mode"),
+    }
+
+    // Switch to Insert
+    vim.handle_key('i');
+    match &vim.mode {
+        VimMode::Insert { .. } => {},
+        _ => panic!("Expected Insert mode"),
+    }
+
+    // Switch back to Normal
+    vim.handle_key('\x1b');
+    match &vim.mode {
+        VimMode::Normal { command } => assert_eq!(command, &CommandState::Idle),
+        _ => panic!("Expected Normal mode"),
+    }
+
+    // Start an operator
+    vim.handle_key('d');
+    match &vim.mode {
+        VimMode::Normal { command } => {
+            match command {
+                CommandState::Operator { op, .. } => assert_eq!(op, &claude_code_rs::Vim::Operator::Delete),
+                _ => panic!("Expected Operator state"),
+            }
+        }
+        _ => panic!("Expected Normal mode"),
+    }
+}
+
+
 
 
