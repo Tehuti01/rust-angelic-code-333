@@ -13,6 +13,8 @@ use ratatui::{
 };
 use std::{io, time::Duration};
 
+pub mod components;
+
 pub async fn run_interactive_loop(ctx: &mut Context) -> Result<()> {
     // Setup terminal
     enable_raw_mode()?;
@@ -52,39 +54,16 @@ async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> R
                 .constraints(
                     [
                         Constraint::Length(3), // Status Bar
-                        Constraint::Min(1),    // History
-                        Constraint::Length(3), // Input
+                        Constraint::Min(1),    // Message History
+                        Constraint::Length(3), // Prompt Input
                     ]
                     .as_ref(),
                 )
                 .split(f.size());
 
-            // 1. Status Bar
-            let provider_str = match ctx.provider {
-                crate::Context::Provider::OpenRouter => "OpenRouter",
-                crate::Context::Provider::Google => "Google",
-                crate::Context::Provider::Nvidia => "Nvidia",
-            };
-            let status_text = format!(
-                " Provider: {} | Model: {} | {}",
-                provider_str,
-                ctx.model,
-                ctx.cost.display_string()
-            );
-            let status_block = Paragraph::new(status_text)
-                .block(Block::default().title(" Status ").borders(Borders::ALL));
-            f.render_widget(status_block, chunks[0]);
-
-            // 2. History
-            let history_text = ctx.history.join("\n");
-            let history_block = Paragraph::new(history_text)
-                .block(Block::default().title(" Conversation History ").borders(Borders::ALL));
-            f.render_widget(history_block, chunks[1]);
-
-            // 3. Input
-            let input_block = Paragraph::new(format!("> {}", input))
-                .block(Block::default().title(" Input (Type /exit to quit, /model to switch) ").borders(Borders::ALL));
-            f.render_widget(input_block, chunks[2]);
+            components::StatusBar::render(f, chunks[0], ctx);
+            components::MessageList::render(f, chunks[1], ctx);
+            components::PromptInput::render(f, chunks[2], &input);
         })?;
 
         if event::poll(Duration::from_millis(100))? {

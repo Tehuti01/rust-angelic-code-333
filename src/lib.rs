@@ -31,4 +31,12 @@ pub mod History;
 pub mod Vim;
 #[allow(non_snake_case)]
 pub mod UpstreamProxy;
+#[allow(non_snake_case)]
+pub mod Services;
+#[allow(non_snake_case)]
+pub mod Migrations;
+#[allow(non_snake_case)]
+pub mod Bash;
+
+
 

@@ -3,6 +3,7 @@ use crate::Tool::ToolRegistry;
 use crate::Cost::CostTracker;
 use crate::Task::TaskState;
 use crate::Types::Message;
+use crate::Services::Services;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -22,6 +23,7 @@ pub struct Context {
     pub provider: Provider,
     pub model: String,
     pub cwd: String,
+    pub services: Services,
 }
 
 impl Context {
@@ -39,6 +41,7 @@ impl Context {
             provider: Provider::Google,
             model: "gemini-2.0-flash".to_string(),
             cwd,
+            services: Services::new(),
         })
     }
 }

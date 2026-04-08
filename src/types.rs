@@ -24,3 +24,39 @@ pub struct ToolCall {
     pub name: String,
     pub arguments: Value,
 }
+
+// Ported from types/permissions.ts
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum PermissionMode {
+    Manual,
+    Auto,
+    Yolo,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PermissionResult {
+    pub granted: bool,
+    pub reason: Option<String>,
+}
+
+// Ported from types/ids.ts
+pub type AgentId = String;
+pub type TaskId = String;
+pub type SessionId = String;
+
+// Ported from services/mcp/types.ts
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MCPServerConfig {
+    pub name: String,
+    pub command: String,
+    pub args: Vec<String>,
+    pub env: std::collections::HashMap<String, String>,
+}
+
+// Ported from types/generated/...
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InternalEvent {
+    pub event_type: String,
+    pub payload: Value,
+    pub timestamp: u64,
+}

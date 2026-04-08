@@ -61,3 +61,24 @@ fn test_07_hash_and_uuid() {
     assert_eq!(hash_string("test"), hash_string("test"));
 }
 
+#[tokio::test]
+async fn test_08_migration_engine() {
+    use claude_code_rs::{Migrations, Context};
+    let mut ctx = Context::Context::new().await.unwrap();
+    ctx.model = "claude-3-5-sonnet-20240620".to_string();
+    
+    let engine = Migrations::MigrationEngine::new();
+    engine.run_all(&mut ctx).unwrap();
+    
+    assert_eq!(ctx.model, "claude-3-5-sonnet-20241022");
+}
+
+#[test]
+fn test_09_bash_utils_security() {
+    use claude_code_rs::Bash::BashUtils;
+    assert!(BashUtils::is_dangerous_command("rm -rf /"));
+    assert!(!BashUtils::is_dangerous_command("ls -la"));
+    assert_eq!(BashUtils::quote("hello world"), "'hello world'");
+}
+
+
