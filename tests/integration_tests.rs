@@ -1,4 +1,4 @@
-use claude_code_rs::{Task, Tool, Context, Cost};
+use claude_code_rs::{Task, Tool, context, Cost};
 
 #[tokio::test]
 async fn test_01_task_id_generation() {
@@ -19,10 +19,10 @@ async fn test_02_tool_registry_registration() {
 
 #[tokio::test]
 async fn test_03_context_initialization() {
-    let ctx = Context::Context::new().await.unwrap();
+    let ctx = context::Context::new().await.unwrap();
     assert!(ctx.history.is_empty());
     assert!(ctx.messages.is_empty());
-    assert_eq!(ctx.provider, Context::Provider::Google);
+    assert_eq!(ctx.provider, context::Provider::Google);
 }
 
 #[tokio::test]
@@ -63,8 +63,8 @@ fn test_07_hash_and_uuid() {
 
 #[tokio::test]
 async fn test_08_migration_engine() {
-    use claude_code_rs::{Migrations, Context};
-    let mut ctx = Context::Context::new().await.unwrap();
+    use claude_code_rs::{Migrations, context};
+    let mut ctx = context::Context::new().await.unwrap();
     ctx.model = "claude-3-5-sonnet-20240620".to_string();
     
     let engine = Migrations::MigrationEngine::new();
@@ -83,16 +83,16 @@ fn test_09_bash_utils_security() {
 
 #[test]
 fn test_10_permissions_engine() {
-    use claude_code_rs::{Permissions, Types};
+    use claude_code_rs::{Permissions, types};
     use std::path::PathBuf;
     
     let base = PathBuf::from("/test");
     let mut engine = Permissions::PermissionsEngine::new(base.clone());
     
-    engine.add_rule(base.join("src"), Types::PermissionMode::Auto);
+    engine.add_rule(base.join("src"), types::PermissionMode::Auto);
     
-    assert_eq!(engine.check_path(&base.join("src/main.rs")), Types::PermissionMode::Auto);
-    assert_eq!(engine.check_path(&base.join("other.rs")), Types::PermissionMode::Manual);
+    assert_eq!(engine.check_path(&base.join("src/main.rs")), types::PermissionMode::Auto);
+    assert_eq!(engine.check_path(&base.join("other.rs")), types::PermissionMode::Manual);
     assert!(engine.is_path_safe(&base.join("src")));
     assert!(!engine.is_path_safe(&base.join("../etc")));
 }
@@ -159,7 +159,7 @@ fn test_12_vim_state_transitions() {
 
 #[test]
 fn test_13_config_management() {
-    use claude_code_rs::{Config, Context};
+    use claude_code_rs::{Config, context};
     let mut config = Config::ConfigManager::new();
     assert_eq!(config.get_value("theme"), Some("dark".to_string()));
     
@@ -179,9 +179,3 @@ fn test_14_buddy_system() {
     assert!(prompt.contains("🦀"));
     assert!(prompt.contains("helpful"));
 }
-
-
-
-
-
-

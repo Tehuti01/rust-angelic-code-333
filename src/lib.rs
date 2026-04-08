@@ -3,8 +3,6 @@ pub mod cli;
 #[allow(non_snake_case)]
 pub mod Commands;
 #[allow(non_snake_case)]
-pub mod Context;
-#[allow(non_snake_case)]
 pub mod QueryEngine;
 #[allow(non_snake_case)]
 pub mod Tool;
@@ -14,8 +12,6 @@ pub mod ui;
 pub mod Cost;
 #[allow(non_snake_case)]
 pub mod Task;
-#[allow(non_snake_case)]
-pub mod Types;
 #[allow(non_snake_case)]
 pub mod file;
 #[allow(non_snake_case)]
@@ -30,13 +26,11 @@ pub mod History;
 pub mod vim;
 #[allow(non_snake_case)]
 pub mod UpstreamProxy;
-
 #[allow(non_snake_case)]
 pub mod Services;
 pub mod bridge;
 #[allow(non_snake_case)]
 pub mod Migrations;
-
 #[allow(non_snake_case)]
 pub mod Bash;
 #[allow(non_snake_case)]
@@ -61,6 +55,12 @@ pub mod constants;
 pub mod coordinator;
 pub mod voice;
 pub mod remote;
+pub mod types;
+pub mod keybindings;
+pub mod bootstrap;
+pub mod context;
+
+
 
 
 

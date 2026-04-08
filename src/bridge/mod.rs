@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::Types::SessionId;
+use crate::types::SessionId;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BridgeConfig {

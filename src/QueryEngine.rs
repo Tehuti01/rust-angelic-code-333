@@ -1,6 +1,6 @@
 use anyhow::Result;
-use crate::Context::Context;
-use crate::Types::{Message, Role, ToolCall};
+use crate::context::Context;
+use crate::types::{Message, Role, ToolCall};
 use serde_json::{json, Value};
 
 pub struct QueryEngine {
@@ -30,9 +30,9 @@ impl QueryEngine {
             loop_count += 1;
 
             let response = match ctx.provider {
-                crate::Context::Provider::OpenRouter => self.call_openrouter(ctx).await?,
-                crate::Context::Provider::Google => self.call_google(ctx).await?,
-                crate::Context::Provider::Nvidia => self.call_nvidia(ctx).await?,
+                crate::context::Provider::OpenRouter => self.call_openrouter(ctx).await?,
+                crate::context::Provider::Google => self.call_google(ctx).await?,
+                crate::context::Provider::Nvidia => self.call_nvidia(ctx).await?,
             };
 
             // Enhanced Tool Call Detection

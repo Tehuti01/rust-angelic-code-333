@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use claude_code_rs::{cli, Commands, Context, ui};
+use claude_code_rs::{cli, Commands, context, ui};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -14,7 +14,7 @@ async fn main() -> Result<()> {
     let args = cli::Cli::parse();
 
     // Initialize context
-    let mut ctx = Context::Context::new().await?;
+    let mut ctx = context::Context::new().await?;
 
     // Handle CLI subcommands if present, or enter interactive mode
     if let Some(cmd) = args.command {

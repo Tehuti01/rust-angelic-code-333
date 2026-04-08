@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::Context::Context;
+use crate::context::Context;
 use crate::cli::Commands as CliCommands;
 use async_trait::async_trait;
 

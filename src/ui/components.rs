@@ -8,16 +8,16 @@ use ratatui::{
     widgets::{Block, Borders, Paragraph, List, ListItem},
     Frame,
 };
-use crate::Context::Context;
+use crate::context::Context;
 
 pub struct StatusBar;
 
 impl StatusBar {
     pub fn render(f: &mut Frame, area: Rect, ctx: &Context) {
         let provider_str = match ctx.provider {
-            crate::Context::Provider::OpenRouter => "OpenRouter",
-            crate::Context::Provider::Google => "Google",
-            crate::Context::Provider::Nvidia => "Nvidia",
+            crate::context::Provider::OpenRouter => "OpenRouter",
+            crate::context::Provider::Google => "Google",
+            crate::context::Provider::Nvidia => "Nvidia",
         };
         let text = format!(
             " [ {} | {} ] | {}",
@@ -35,7 +35,7 @@ pub struct MessageList;
 
 impl MessageList {
     pub fn render(f: &mut Frame, area: Rect, ctx: &Context) {
-        let items: Vec<ListItem> = ctx.history.iter().map(|h| {
+        let items: Vec<ListItem> = ctx.history.iter().map(|h: &String| {
             ListItem::new(h.as_str())
         }).collect();
         

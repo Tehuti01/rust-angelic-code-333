@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::Types::{MCPServerConfig, InternalEvent};
+use crate::types::{MCPServerConfig, InternalEvent};
 use serde_json::Value;
 
 pub struct ApiClient {

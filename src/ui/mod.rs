@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::Context::Context;
+use crate::context::Context;
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
@@ -79,17 +79,17 @@ async fn run_app<B: Backend>(terminal: &mut Terminal<B>, ctx: &mut Context) -> R
                             if parts.len() >= 3 {
                                 match parts[1].to_lowercase().as_str() {
                                     "openrouter" => {
-                                        ctx.provider = crate::Context::Provider::OpenRouter;
+                                        ctx.provider = crate::context::Provider::OpenRouter;
                                         ctx.model = parts[2].to_string();
                                         ctx.history.push(format!("Model switched to OpenRouter: {}", ctx.model));
                                     }
                                     "google" => {
-                                        ctx.provider = crate::Context::Provider::Google;
+                                        ctx.provider = crate::context::Provider::Google;
                                         ctx.model = parts[2].to_string();
                                         ctx.history.push(format!("Model switched to Google: {}", ctx.model));
                                     }
                                     "nvidia" => {
-                                        ctx.provider = crate::Context::Provider::Nvidia;
+                                        ctx.provider = crate::context::Provider::Nvidia;
                                         ctx.model = parts[2].to_string();
                                         ctx.history.push(format!("Model switched to Nvidia: {}", ctx.model));
                                     }

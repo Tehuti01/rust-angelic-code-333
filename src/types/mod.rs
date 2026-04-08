@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use std::collections::HashMap;
+use anyhow::Result;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -22,7 +23,7 @@ pub struct Message {
 pub struct ToolCall {
     pub id: String,
     pub name: String,
-    pub arguments: Value,
+    pub arguments: serde_json::Value,
 }
 
 // Ported from types/permissions.ts
@@ -57,6 +58,52 @@ pub struct MCPServerConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InternalEvent {
     pub event_type: String,
-    pub payload: Value,
+    pub payload: serde_json::Value,
     pub timestamp: u64,
+}
+
+/// Core Type Definitions (Replaces TS Types)
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CommandType {
+    pub name: String,
+    pub description: String,
+    pub is_hidden: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PluginType {
+    pub id: String,
+    pub manifest_version: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LogType {
+    pub level: String,
+    pub message: String,
+    pub timestamp: u64,
+}
+
+pub type TextInputValue = String;
+
+// Generated Protobuf/Event types
+pub mod generated {
+    use serde::{Deserialize, Serialize};
+    
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    pub struct Timestamp {
+        pub seconds: i64,
+        pub nanos: i32,
+    }
+
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    pub struct AuthEvent {
+        pub token_id: String,
+        pub status: String,
+    }
+
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    pub struct InternalEvent {
+        pub event_name: String,
+        pub payload: serde_json::Value,
+    }
 }

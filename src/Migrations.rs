@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::Context::Context;
+use crate::context::Context;
 
 pub trait Migration {
     fn name(&self) -> &'static str;
