@@ -25,3 +25,10 @@ pub mod replace;
 #[allow(non_snake_case)]
 pub mod glob;
 pub mod utils;
+#[allow(non_snake_case)]
+pub mod History;
+#[allow(non_snake_case)]
+pub mod Vim;
+#[allow(non_snake_case)]
+pub mod UpstreamProxy;
+
