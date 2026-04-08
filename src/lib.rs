@@ -27,14 +27,16 @@ pub mod glob;
 pub mod utils;
 #[allow(non_snake_case)]
 pub mod History;
-#[allow(non_snake_case)]
-pub mod Vim;
+pub mod vim;
 #[allow(non_snake_case)]
 pub mod UpstreamProxy;
+
 #[allow(non_snake_case)]
 pub mod Services;
+pub mod bridge;
 #[allow(non_snake_case)]
 pub mod Migrations;
+
 #[allow(non_snake_case)]
 pub mod Bash;
 #[allow(non_snake_case)]

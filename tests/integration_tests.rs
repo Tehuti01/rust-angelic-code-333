@@ -121,7 +121,7 @@ fn test_11_file_edit_logic() {
 
 #[test]
 fn test_12_vim_state_transitions() {
-    use claude_code_rs::Vim::{VimState, VimMode, CommandState};
+    use claude_code_rs::vim::{VimState, VimMode, CommandState};
     let mut vim = VimState::new();
     
     // Initial state
@@ -149,7 +149,7 @@ fn test_12_vim_state_transitions() {
     match &vim.mode {
         VimMode::Normal { command } => {
             match command {
-                CommandState::Operator { op, .. } => assert_eq!(op, &claude_code_rs::Vim::Operator::Delete),
+                CommandState::Operator { op, .. } => assert_eq!(op, &claude_code_rs::vim::Operator::Delete),
                 _ => panic!("Expected Operator state"),
             }
         }

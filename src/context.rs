@@ -6,6 +6,7 @@ use crate::Types::Message;
 use crate::Services::Services;
 use crate::Config::ConfigManager;
 use crate::Buddy::BuddyCompanion;
+use crate::bridge::BridgeManager;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -28,6 +29,7 @@ pub struct Context {
     pub services: Services,
     pub config: ConfigManager,
     pub buddy: BuddyCompanion,
+    pub bridge: BridgeManager,
 }
 
 impl Context {
@@ -48,6 +50,7 @@ impl Context {
             services: Services::new(),
             config: ConfigManager::new(),
             buddy: BuddyCompanion::new(),
+            bridge: BridgeManager::new(),
         })
     }
 }
