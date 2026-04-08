@@ -1,3 +1,8 @@
+pub mod messages;
+pub mod tasks;
+pub mod settings;
+pub mod shell;
+
 use ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
     widgets::{Block, Borders, Paragraph, List, ListItem},
