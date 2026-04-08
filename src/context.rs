@@ -5,6 +5,7 @@ use crate::Task::TaskState;
 use crate::Types::Message;
 use crate::Services::Services;
 use crate::Config::ConfigManager;
+use crate::Buddy::BuddyCompanion;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -26,6 +27,7 @@ pub struct Context {
     pub cwd: String,
     pub services: Services,
     pub config: ConfigManager,
+    pub buddy: BuddyCompanion,
 }
 
 impl Context {
@@ -45,6 +47,7 @@ impl Context {
             cwd,
             services: Services::new(),
             config: ConfigManager::new(),
+            buddy: BuddyCompanion::new(),
         })
     }
 }

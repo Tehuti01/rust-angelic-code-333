@@ -170,6 +170,17 @@ fn test_13_config_management() {
     assert_eq!(config.get_value("theme"), Some("light".to_string()));
 }
 
+#[test]
+fn test_14_buddy_system() {
+    use claude_code_rs::Buddy::BuddyCompanion;
+    let buddy = BuddyCompanion::new();
+    let prompt = buddy.get_system_prompt();
+    assert!(prompt.contains("Clawd"));
+    assert!(prompt.contains("🦀"));
+    assert!(prompt.contains("helpful"));
+}
+
+
 
 
 

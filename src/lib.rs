@@ -43,6 +43,9 @@ pub mod Permissions;
 pub mod FileEdit;
 #[allow(non_snake_case)]
 pub mod Config;
+#[allow(non_snake_case)]
+pub mod Buddy;
+
 
 
 
