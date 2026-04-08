@@ -41,6 +41,9 @@ pub mod Bash;
 pub mod Permissions;
 #[allow(non_snake_case)]
 pub mod FileEdit;
+#[allow(non_snake_case)]
+pub mod Config;
+
 
 
 

@@ -4,6 +4,7 @@ use crate::Cost::CostTracker;
 use crate::Task::TaskState;
 use crate::Types::Message;
 use crate::Services::Services;
+use crate::Config::ConfigManager;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -24,6 +25,7 @@ pub struct Context {
     pub model: String,
     pub cwd: String,
     pub services: Services,
+    pub config: ConfigManager,
 }
 
 impl Context {
@@ -42,6 +44,7 @@ impl Context {
             model: "gemini-2.0-flash".to_string(),
             cwd,
             services: Services::new(),
+            config: ConfigManager::new(),
         })
     }
 }

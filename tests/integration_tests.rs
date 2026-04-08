@@ -157,6 +157,20 @@ fn test_12_vim_state_transitions() {
     }
 }
 
+#[test]
+fn test_13_config_management() {
+    use claude_code_rs::{Config, Context};
+    let mut config = Config::ConfigManager::new();
+    assert_eq!(config.get_value("theme"), Some("dark".to_string()));
+    
+    let mut new_conf = Config::Config::default();
+    new_conf.theme = "light".to_string();
+    config.update(new_conf);
+    
+    assert_eq!(config.get_value("theme"), Some("light".to_string()));
+}
+
+
 
 
 
