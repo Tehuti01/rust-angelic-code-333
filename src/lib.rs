@@ -37,6 +37,11 @@ pub mod Services;
 pub mod Migrations;
 #[allow(non_snake_case)]
 pub mod Bash;
+#[allow(non_snake_case)]
+pub mod Permissions;
+#[allow(non_snake_case)]
+pub mod FileEdit;
+
 
 
 

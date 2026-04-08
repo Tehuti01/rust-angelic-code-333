@@ -81,4 +81,43 @@ fn test_09_bash_utils_security() {
     assert_eq!(BashUtils::quote("hello world"), "'hello world'");
 }
 
+#[test]
+fn test_10_permissions_engine() {
+    use claude_code_rs::{Permissions, Types};
+    use std::path::PathBuf;
+    
+    let base = PathBuf::from("/test");
+    let mut engine = Permissions::PermissionsEngine::new(base.clone());
+    
+    engine.add_rule(base.join("src"), Types::PermissionMode::Auto);
+    
+    assert_eq!(engine.check_path(&base.join("src/main.rs")), Types::PermissionMode::Auto);
+    assert_eq!(engine.check_path(&base.join("other.rs")), Types::PermissionMode::Manual);
+    assert!(engine.is_path_safe(&base.join("src")));
+    assert!(!engine.is_path_safe(&base.join("../etc")));
+}
+
+#[test]
+fn test_11_file_edit_logic() {
+    use claude_code_rs::FileEdit::FileEditTool;
+    use std::fs;
+    use std::path::PathBuf;
+
+    let temp_dir = std::env::temp_dir();
+    let file_path = temp_dir.join("test_edit.txt");
+    fs::write(&file_path, "line 1\nline 2\nline 3").unwrap();
+
+    // Test read_lines
+    let lines = FileEditTool::read_lines(&file_path, 1, 2).unwrap();
+    assert_eq!(lines, "line 1\nline 2");
+
+    // Test apply_edit
+    FileEditTool::apply_edit(&file_path, "line 2", "line two").unwrap();
+    let new_content = fs::read_to_string(&file_path).unwrap();
+    assert!(new_content.contains("line two"));
+
+    fs::remove_file(file_path).unwrap();
+}
+
+
 
